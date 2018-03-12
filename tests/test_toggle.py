@@ -6,7 +6,8 @@ class TestBaseToggle(unittest.TestCase):
     def setUp(self):
         self.toggle = BaseToggle('url', 'token')
 
+
 class TestToggleConnection(TestBaseToggle):
-    def test_establish_connection(self):
+    def test_connection_established(self):
         pass
 
