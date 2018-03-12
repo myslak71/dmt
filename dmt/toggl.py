@@ -1,45 +1,36 @@
 import requests
-from future.utils import with_metaclass
 
 
-class BaseToggle(object):
-    def __init__(self, url, token):
-        self._url = url
-        self._token = token
+class Toggl(object):
+    def __init__(self, api_url, token):
+        self.toggl = BaseToggl().setup_toggl(api_url, token)
+
+    def get_time_entries(self, start_time='', end_time=''):
+        return self.toggl.get_time_entries(start_time=start_time, end_time=end_time)
 
 
-"""
-class ToggleTimeEntries(with_metaclass(_Toggl)):
-    def get_time_entries(self, start_date="", end_date=""):
-        if start_date and end_date:
-            return self._get_time_entries_with_start_end_date(start_date=start_date, end_date=end_date)
-        elif start_date and not end_date:
-            return self._get_time_entries_with_start_date(start_date=start_date)
-        elif end_date and not start_date:
-            return self._get_time_entries_with_end_date(end_date=end_date)
-        elif not start_date and not end_date:
-            return self._get_time_entries_default()
+class BaseToggl(object):
+    def setup_toggl(self, api_url, token):
+        self.api_url = api_url
+        self.token = token
+        self._set_session()
+        return self
 
-    def _get_time_entries_default(self):
-        return requests.get(
-            "{}time_entries?".format(config.TOGGL_URL), auth=(self._token, "api_token")).json()
+    def get_time_entries(self, start_time='', end_time=''):
+        url = self._build_url(start_date=start_time, end_date=end_time, category='time_entries')
+        return self.session.get(url).json()
 
-    def _get_time_entries_with_start_date(self, start_date):
-        return requests.get(
-            "{}time_entries?start_date={start}T15%3A42%3A46%2B02%3A00".format(config.TOGGL_URL,
-                                                                              start=start_date),
-            auth=(self._token, "api_token")).json()
+    def _set_session(self):
+        session = requests.Session()
+        session.auth = (self.token, 'api_token')
+        self.session = session
 
-    def _get_time_entries_with_end_date(self, end_date):
-        return requests.get(
-            "{}time_entries?end_date={end}T15%3A42%3A46%2B02%3A00".format(config.TOGGL_URL,
-                                                                          end=end_date),
-            auth=(self._token, "api_token")).json()
+    def _build_url(self, **kwargs):
+        category = kwargs.pop('category')
+        parameters = '&'.join(['{}={}'.format(kwarg, self._format_date(kwargs[kwarg])) for kwarg in kwargs])
+        url = '{base_url}{cat}?{params}'.format(base_url=self.api_url, cat=category, params=parameters)
+        return url
 
-    def _get_time_entries_with_start_end_date(self, start_date, end_date):
-        return requests.get(
-            "{}time_entries?start_date={start}T15%3A42%3A46%2B02%3A00&end_date={end}T15%3A42%3A46%2B02%3A00".format(
-                config.TOGGL_URL,
-                start=start_date, end=end_date),
-            auth=(self._token, "api_token")).json()
-"""
+    def _format_date(self, date):
+        formated_date = date.replace(':', '%3A').replace('+', '%2B').replace('-', '%2D')
+        return formated_date
