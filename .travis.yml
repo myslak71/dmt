@@ -1,0 +1,12 @@
+language: python
+python:
+- '2.7.14'
+- '3.5'
+- '3.6'
+cache: pip
+install:
+- pip install pipenv --upgrade
+- pipenv install --dev
+script:
+- py.test --cov=patterns tests/
+after_success: coveralls
