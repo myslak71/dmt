@@ -1,12 +1,12 @@
 import unittest
 import requests_mock
-from dmt.toggl import Toggl
+from dmt.toggl import ToggleInterface
 from tests.fixtures.responses import fixed_time_entries
 
 
 class TestBaseToggle(unittest.TestCase):
     def setUp(self):
-        self.toggle = Toggl('https://www.toggl.com/api/v8/', 'token')
+        self.toggle = ToggleInterface('https://www.toggl.com/api/v8/', 'token')
 
 
 @requests_mock.Mocker()
