@@ -4,7 +4,7 @@ from requests.adapters import HTTPAdapter
 
 class TogglInterface(object):
     def __init__(self, api_url, token):
-        self.toggl = BaseToggl().setup_toggl(api_url, token)
+        self.toggl = Toggl().setup_toggl(api_url, token)
 
     def get_time_entries(self, start_time='', end_time=''):
         return self.toggl.get_time_entries(start_time=start_time, end_time=end_time)
@@ -13,7 +13,7 @@ class TogglInterface(object):
         return self.toggl.tag_time_entry(time_entries)
 
 
-class BaseToggl(object):
+class Toggl(object):
     def setup_toggl(self, api_url, token):
         self.api_url = api_url
         self.token = token
