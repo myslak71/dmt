@@ -24,7 +24,6 @@ class BaseToggl(object):
         start_date = self._format_datetime(start_time)
         end_date = self._format_datetime(end_time)
         url = self._build_url(start_date=start_date, end_date=end_date, category='time_entries', separate_sign='?')
-        print(url, 'chuj')
         return self.session.get(url).json()
 
     def tag_time_entry(self, entry_id):

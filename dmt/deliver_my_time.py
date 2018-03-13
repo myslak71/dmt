@@ -1,4 +1,4 @@
-import datetime
+import arrow
 
 from dmt.config.config import TOGGLE_API_URL
 from dmt.jira_interface import JiraInterface
@@ -12,6 +12,12 @@ class Dmt(object):
         self.tag = tag
 
     def log_time_entries(self, days=30):
+        """
+
+
+        :param days:
+        :return:
+        """
         start_date = self._get_start_datetime(days)
         toggle_time_entries = self.toggle.get_time_entries(start_date)
         for time_entry in toggle_time_entries:
@@ -20,6 +26,8 @@ class Dmt(object):
 
     @staticmethod
     def _get_start_datetime(days):
-        now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
-        start_datetime = now - datetime.timedelta(days=days)
-        return start_datetime.isoformat()
+        #now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
+        now = arrow.utcnow()
+        #start_datetime = now - datetime.timedelta(days=days)
+        start_datetime = now.shift(days=-days)
+        return start_datetime.format('YYYY-MM-DDTHH:mm:ss')
