@@ -13,7 +13,7 @@ class Dmt(object):
 
     def log_time_to_jira(self, days=30, comment='time logged by dmt'):
         """
-        Collect time entries from toggl. Log every entry to jira to jira and tag entry on toggle side.
+        Collect time entries from toggl. Log every entry without tag to jira and tag entry on toggle side.
 
         :param days: days span
         :param comment: description for time logs in jira
