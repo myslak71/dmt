@@ -2,7 +2,7 @@ import requests
 from requests.adapters import HTTPAdapter
 
 
-class ToggleInterface(object):
+class TogglInterface(object):
     def __init__(self, api_url, token):
         self.toggl = BaseToggl().setup_toggl(api_url, token)
 
