@@ -18,7 +18,8 @@ class Dmt(object):
             self.jira.log_task_time(time_entry['description'], time_entry['duration'], comment='logged time by dmt')
             self.toggle.tag_time_entry(time_entry['id'])
 
-    def _get_start_datetime(self, days):
+    @staticmethod
+    def _get_start_datetime(days):
         now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
         start_datetime = now - datetime.timedelta(days=days)
         return start_datetime.isoformat()

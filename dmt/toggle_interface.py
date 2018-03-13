@@ -27,8 +27,8 @@ class BaseToggl(object):
         print(url, 'chuj')
         return self.session.get(url).json()
 
-    def tag_time_entry(self, id):
-        url = self._build_url(id=id, category='time_entries', separate_sign='/')
+    def tag_time_entry(self, entry_id):
+        url = self._build_url(entry_id=entry_id, category='time_entries', separate_sign='/')
         return requests.post('{url}'.format(url=url))
 
     def _set_session(self):
@@ -44,16 +44,17 @@ class BaseToggl(object):
         url = '{base_url}{cat}{params}'.format(base_url=self.api_url, cat=category, params=parameters)
         return url
 
-    def _format_datetime(self, datetime):
+    @staticmethod
+    def _format_datetime(datetime):
         if datetime:
             grouped_datetime = datetime.split('T')
             formated_time = grouped_datetime[-1].replace(':', '%3A').replace('+', '%2B').replace('-', '%2D')
             return '{date}T{time}'.format(date=grouped_datetime[0], time=formated_time)
         return ''
 
-    def _get_parameters(self, separate_sign, **kwargs):
+    @staticmethod
+    def _get_parameters(separate_sign, **kwargs):
         if separate_sign == '/':
-            return '/{id}'.format(id=kwargs.pop('id', ''))
+            return '/{entry_id}'.format(entry_id=kwargs.pop('entry_id', ''))
         elif separate_sign == '?':
             return '?' + '&'.join(['{key}={value}'.format(key=kwarg, value=kwargs[kwarg]) for kwarg in kwargs])
-
