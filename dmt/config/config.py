@@ -1,1 +1,1 @@
-TOGGLE_API_URL =  'https://www.toggl.com/api/v8/'
+TOGGLE_API_URL = 'https://www.toggl.com/api/v8/'

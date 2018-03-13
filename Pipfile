@@ -22,3 +22,4 @@ python-coveralls = "*"
 
 requests = "*"
 future = "*"
+jira = "*"

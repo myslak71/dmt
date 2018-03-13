@@ -1,6 +1,6 @@
 import unittest
 import requests_mock
-from dmt.toggl import ToggleInterface
+from dmt.toggle_interface import ToggleInterface
 from tests.fixtures.responses import fixed_time_entries
 
 
@@ -10,7 +10,7 @@ class TestBaseToggle(unittest.TestCase):
 
 
 @requests_mock.Mocker()
-class TestToggleConnection(TestBaseToggle):
+class TestToggle(TestBaseToggle):
     def test_get_time_entries_response(self, response_mock):
         response_mock.register_uri('GET', 'https://www.toggl.com/api/v8/time_entries?start_date=&end_date=',
                                    json=fixed_time_entries, status_code=200)
@@ -20,4 +20,4 @@ class TestToggleConnection(TestBaseToggle):
     def test_tag_time_entries_response(self, response_mock):
         response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/814800050',
                                    status_code=200)
-        self.toggle.tag_time_entries(fixed_time_entries)
+        self.toggle.tag_time_entry(fixed_time_entries[0]['id'])
