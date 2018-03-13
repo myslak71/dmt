@@ -8,10 +8,10 @@ from dmt.toggle_interface import ToggleInterface
 class Dmt(object):
     def __init__(self, token, jira_url, jira_user, jira_password, tag='logged'):
         self.toggle = ToggleInterface(TOGGLE_API_URL, token)
-        self.jira = JiraInterface(jira_url, basic_auth=(jira_user, jira_password))
+        self.jira = JiraInterface(jira_url, jira_user, jira_password)
         self.tag = tag
 
-    def log_time_entries(self, days):
+    def log_time_entries(self, days=30):
         start_date = self._get_start_datetime(days)
         toggle_time_entries = self.toggle.get_time_entries(start_date)
         for time_entry in toggle_time_entries:
