@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a609a225f02304fdde83c680ef90d296037dd883458a227fb1f533b8abe6d0fa"
+            "sha256": "ce28fc518b97cb9fe939e50de342f48539867f15ab42edc04d135f6b23288054"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -21,6 +21,13 @@
                 "sha256:a558d3b7b6ce7ffc74206a86c147052de23d3d4ef0e17c210dd478c53575c4cd"
             ],
             "version": "==0.12.1"
+        },
+        "backports.functools-lru-cache": {
+            "hashes": [
+                "sha256:9d98697f088eb1b0fa451391f91afb5e3ebde16bbdb272819fd091151fda4f1a",
+                "sha256:f0b0e4eba956de51238e17573b7087e852dfe9854afd2e9c873f73fc0ca0a6dd"
+            ],
+            "version": "==1.5"
         },
         "certifi": {
             "hashes": [

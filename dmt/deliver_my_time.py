@@ -11,18 +11,19 @@ class Dmt(object):
         self.jira = JiraInterface(jira_url, jira_user, jira_password)
         self.tag = tag
 
-    def log_time_to_jira(self, days=30):
+    def log_time_to_jira(self, days=30, comment='time logged by dmt'):
         """
         Collect time entries from toggl. Log every entry to jira to jira and tag entry on toggle side.
 
         :param days: days span
+        :param comment: description for time logs in jira
         :return:
         """
         start_date = self._get_start_datetime(days)
         toggl_time_entries = self.toggl.get_time_entries(start_date)
         filtered_toggl_time_entries = self._filter_toggle_time_entries(toggl_time_entries)
         for time_entry in filtered_toggl_time_entries:
-            self.jira.log_task_time(time_entry['description'], time_entry['duration'], comment='time logged by dmt')
+            self.jira.log_task_time(time_entry['description'], time_entry['duration'], comment=comment)
             self.toggl.tag_time_entry(time_entry['id'])
 
     @staticmethod
