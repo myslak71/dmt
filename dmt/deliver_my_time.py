@@ -22,7 +22,7 @@ class Dmt(object):
         start_date = self._get_start_datetime(days)
         toggl_time_entries = self.toggl.get_time_entries(start_date)
         filtered_toggl_time_entries = self._filter_toggl_time_entries(toggl_time_entries)
-        for time_entry in filtered_toggl_time_entries:
+        for time_entry in [entry for entry in filtered_toggl_time_entries]:
             self.jira.log_task_time(time_entry['description'], time_entry['duration'], comment=comment)
             self.toggl.tag_time_entry(time_entry['id'])
 
@@ -30,7 +30,7 @@ class Dmt(object):
     def _get_start_datetime(days):
         now = arrow.utcnow()
         start_datetime = now.shift(days=-days)
-        return start_datetime.format('YYYY-MM-DDTHH:mm:ss')
+        return start_datetime.format('YYYY-MM-DDTHH:mm:ssZZ')
 
     def _filter_toggl_time_entries(self, toggl_time_entries):
         return [time_entry for time_entry in toggl_time_entries if
