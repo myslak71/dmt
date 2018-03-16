@@ -16,6 +16,8 @@ pytest = "*"
 pytest-cov = "*"
 requests-mock = "*"
 python-coveralls = "*"
+arrow = "*"
+ddt = "*"
 
 
 [packages]

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ce28fc518b97cb9fe939e50de342f48539867f15ab42edc04d135f6b23288054"
+            "sha256": "7b158721b1fbcb5e65d929f6714c066fe8487aef8f8539cbd37bc74e60a6b9ae"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -127,6 +127,12 @@
         }
     },
     "develop": {
+        "arrow": {
+            "hashes": [
+                "sha256:a558d3b7b6ce7ffc74206a86c147052de23d3d4ef0e17c210dd478c53575c4cd"
+            ],
+            "version": "==0.12.1"
+        },
         "attrs": {
             "hashes": [
                 "sha256:1c7960ccfd6a005cd9f7ba884e6316b5e430a3f1a6c37c5f87d8b43f83b54ec9",
@@ -180,6 +186,13 @@
             ],
             "version": "==4.0.3"
         },
+        "ddt": {
+            "hashes": [
+                "sha256:9cedeed3132f10a31fd8c0a0b463f9ebf95039a5718b54ea596fb20eade1fe14",
+                "sha256:fdb6af91e668ad29e0e51ec1cb3baf67c628ae006b171735f2d42ae8c1af13f3"
+            ],
+            "version": "==1.1.2"
+        },
         "idna": {
             "hashes": [
                 "sha256:2c6a5de3089009e3da7c5dde64a141dbc8551d5b7f6cf4ed7c2568d0cc520a8f",
@@ -220,6 +233,13 @@
                 "sha256:736dda01f64beda240e1500d5f264b969495b05fcb325c7c0eb7ebbfd1210b70"
             ],
             "version": "==2.9.1"
+        },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:07009062406cffd554a9b4135cd2ff167c9bf6b7aac61fe946c93e69fad1bbd8",
+                "sha256:8f95bb7e6edbb2456a51a1fb58c8dca942024b4f5844cae62c90aa88afe6e300"
+            ],
+            "version": "==2.7.0"
         },
         "pyyaml": {
             "hashes": [
