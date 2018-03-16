@@ -32,8 +32,6 @@ class TestDmt(unittest.TestCase):
                                    status_code=200)
         response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/3',
                                    status_code=200)
-        response_mock.register_uri('POST', 'https://www.jira_url.example/rest/api/2/issue/TAT-2019/worklog',
-                                   status_code=200)
         dmt = Dmt('token', 'https://www.jira_url.example', 'jira_user', 'jira_pass')
         dmt.local_entries = local_entries
         dmt.log_time_to_jira(6)
