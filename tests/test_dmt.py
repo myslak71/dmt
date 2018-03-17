@@ -34,4 +34,4 @@ class TestDmt(unittest.TestCase):
                                    status_code=200)
         dmt = Dmt('token', 'https://www.jira_url.example', 'jira_user', 'jira_pass')
         dmt.local_entries = local_entries
-        dmt.log_time_to_jira(6)
+        dmt.log_time_to_jira(6, pattern=r'task-[12]')

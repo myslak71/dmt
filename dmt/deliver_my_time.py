@@ -1,3 +1,4 @@
+import re
 import shelve
 
 import arrow
@@ -18,17 +19,18 @@ class Dmt(object):
         self.tag = tag
         self.local_entries = shelve.open('dmt_local')
 
-    def log_time_to_jira(self, days=30, comment='time logged by dmt'):
+    def log_time_to_jira(self, days=30, pattern=r'.*', comment='time logged by dmt'):
         """
         Collect time entries from toggl. Log every entry without tag to jira and tag entry on toggl side.
 
         :param days: days span
+        :param pattern: log toggle entry when description matches pattern
         :param comment: description for time logs in jira
         :return:
         """
         start_date = self._get_start_datetime(days)
         toggl_time_entries = self.toggl.get_time_entries(start_date)
-        filtered_toggl_time_entries = self._filter_toggl_time_entries(toggl_time_entries)
+        filtered_toggl_time_entries = self._filter_toggl_time_entries(toggl_time_entries, pattern)
         for time_entry in [entry for entry in filtered_toggl_time_entries]:
             if not self._time_entry_logged_in_jira(time_entry['id']):
                 try:
@@ -56,8 +58,9 @@ class Dmt(object):
         start_datetime = now.shift(days=-days)
         return start_datetime.format('YYYY-MM-DDTHH:mm:ssZZ')
 
-    def _filter_toggl_time_entries(self, toggl_time_entries):
-        return [time_entry for time_entry in toggl_time_entries if self.tag not in time_entry.get('tags', [])]
+    def _filter_toggl_time_entries(self, entries, pattern):
+        return [entry for entry in entries if
+                self.tag not in entry.get('tags', []) and re.match(pattern, entry['description'])]
 
     def _time_entry_logged_in_jira(self, entry_id):
         if not self.local_entries.get(str(entry_id), None):
