@@ -26,11 +26,11 @@ class TestDmt(unittest.TestCase):
                                    status_code=200)
         response_mock.register_uri('GET', 'https://www.toggl.com/api/v8/time_entries?start_date=&end_date=',
                                    json=fixed_time_entries, status_code=200)
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/1',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/1',
                                    status_code=200)
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/2',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/2',
                                    status_code=200)
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/3',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/3',
                                    status_code=200)
         dmt = Dmt('token', 'https://www.jira_url.example', 'jira_user', 'jira_pass')
         dmt.local_entries = local_entries

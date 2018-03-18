@@ -21,10 +21,10 @@ class TestToggl(TestBaseToggl):
         self.assertEqual(fixed_time_entries, time_entries)
 
     def test_tag_time_entries_response(self, response_mock):
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/1',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/1',
                                    status_code=200)
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/2',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/2',
                                    status_code=200)
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/3',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/3',
                                    status_code=200)
-        self.toggl.tag_time_entry(fixed_time_entries[0]['id'])
+        self.toggl.tag_time_entry(fixed_time_entries[0]['id'], 'logged')

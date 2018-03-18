@@ -1,3 +1,4 @@
+import json
 import requests
 from requests.adapters import HTTPAdapter
 
@@ -9,8 +10,8 @@ class TogglInterface(object):
     def get_time_entries(self, start_time='', end_time=''):
         return self.toggl.get_time_entries(start_time=start_time, end_time=end_time)
 
-    def tag_time_entry(self, time_entries):
-        return self.toggl.tag_time_entry(time_entries)
+    def tag_time_entry(self, time_entries, tag):
+        return self.toggl.tag_time_entry(time_entries, tag)
 
 
 class Toggl(object):
@@ -26,9 +27,10 @@ class Toggl(object):
         url = self._build_url(start_date=start_date, end_date=end_date, category='time_entries', separate_sign='?')
         return self.session.get(url).json()
 
-    def tag_time_entry(self, entry_id):
+    def tag_time_entry(self, entry_id, tag):
         url = self._build_url(entry_id=entry_id, category='time_entries', separate_sign='/')
-        return requests.post('{url}'.format(url=url))
+        data = {'time_entry': {"tags": [tag], 'tag_action': 'add'}}
+        return requests.put('{url}'.format(url=url), data=json.dumps(data), auth=(self.token, 'api_token'))
 
     def _set_session(self):
         session = requests.Session()

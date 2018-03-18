@@ -44,7 +44,7 @@ class Dmt(object):
                     continue
             if not self._time_entry_tagged_in_toggl(time_entry['id']):
                 try:
-                    self.toggl.tag_time_entry(time_entry['id'])
+                    self.toggl.tag_time_entry(time_entry['id'], self.tag)
                     logger.info('Tagged entry {} in Toggle'.format(time_entry['id']))
                 except HTTPError:
                     logger.error('Error during tagging entry {} in Toggle', exc_info=True)
