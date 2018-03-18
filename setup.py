@@ -11,7 +11,7 @@ install_requires = [line.rstrip('\n') for line in open(os.path.join(DIR_PATH, 'r
 
 setup(
     name='dmt',
-    version='0.1.2',
+    version='0.1.3',
     packages=find_packages(),
     author='kedod',
     author_email='kedod@protonmail.com',
