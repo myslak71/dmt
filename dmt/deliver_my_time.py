@@ -2,7 +2,7 @@ import re
 import shelve
 
 import arrow
-from requests.exceptions import HTTPError
+from requests.exceptions import RequestException
 
 from dmt.config.config import LOGGER
 from dmt.config.config import TOGGL_API_URL
@@ -37,14 +37,14 @@ class Dmt(object):
             if not self._time_entry_logged_in_jira(time_entry['id']):
                 try:
                     self._log_task_time(comment, time_entry)
-                except HTTPError:
+                except RequestException:
                     self._flag_logged_in_local(time_entry, False)
                     continue
 
             if not self._time_entry_tagged_in_toggl(time_entry['id']):
                 try:
                     self._tag_time_entry(time_entry)
-                except HTTPError:
+                except RequestException:
                     self._flag_tagged_in_local(time_entry, False)
                     continue
 
