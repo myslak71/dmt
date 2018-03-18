@@ -19,7 +19,7 @@ class Dmt(object):
         self.tag = tag
         self.local_entries = shelve.open('dmt_local')
 
-    def log_time_to_jira(self, days=30, pattern=r'.*', comment='time logged by dmt'):
+    def log_time_to_jira(self, days=30, pattern=r'.*', comment='time logged by dmt; entry {}'):
         """
         Collect time entries from toggl. Log every entry without tag to jira and tag entry on toggl side.
 
@@ -34,7 +34,8 @@ class Dmt(object):
         for time_entry in [entry for entry in filtered_toggl_time_entries]:
             if not self._time_entry_logged_in_jira(time_entry['id']):
                 try:
-                    self.jira.log_task_time(time_entry['description'], time_entry['duration'], comment=comment)
+                    self.jira.log_task_time(time_entry['description'], time_entry['duration'],
+                                            comment=comment.format(time_entry['id']))
                     logger.info('Logged time for entry {} to Jira'.format(time_entry['id']))
                 except HTTPError:
                     logger.error('Error during logging time for entry {} to Jira', exc_info=True)
