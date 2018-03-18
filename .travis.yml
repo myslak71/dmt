@@ -1,7 +1,6 @@
 language: python
 os:
   - linux
-  - windows
 python:
   - '2.7.14'
   - '3.5'
