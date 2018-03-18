@@ -51,7 +51,7 @@ class Dmt(object):
                     self.local_entries[str(time_entry['id'])]['logged'] = False
                     logger.info('Set logged flag to False in local entries storage')
                     continue
-            self.local_entries.pop(time_entry['id'], None)
+            self.local_entries.pop(str(time_entry['id']), None)
 
     @staticmethod
     def _get_start_datetime(days):
@@ -61,7 +61,8 @@ class Dmt(object):
 
     def _filter_toggl_time_entries(self, entries, pattern):
         return [entry for entry in entries if
-                self.tag not in entry.get('tags', []) and re.match(pattern, entry['description'])]
+                self.tag not in entry.get('tags', []) and re.match(pattern, entry['description']) and entry[
+                    'duration'] >= 60]
 
     def _time_entry_logged_in_jira(self, entry_id):
         if not self.local_entries.get(str(entry_id), None):
