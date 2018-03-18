@@ -3,6 +3,7 @@ import shelve
 
 import arrow
 from requests.exceptions import RequestException
+from jira.exceptions import JIRAError
 
 from dmt.config.config import LOGGER
 from dmt.config.config import TOGGL_API_URL
@@ -34,14 +35,14 @@ class Dmt(object):
 
         for time_entry in [entry for entry in filtered_toggl_time_entries]:
 
-            if not self._time_entry_logged_in_jira(time_entry['id']):
+            if not self._local_entry_flag_exist(time_entry['id'], 'logged'):
                 try:
                     self._log_task_time(comment, time_entry)
-                except RequestException:
+                except JIRAError:
                     self._flag_logged_in_local(time_entry, False)
                     continue
 
-            if not self._time_entry_tagged_in_toggl(time_entry['id']):
+            if not self._local_entry_flag_exist(time_entry['id'], 'tagged'):
                 try:
                     self._tag_time_entry(time_entry)
                 except RequestException:
@@ -82,16 +83,6 @@ class Dmt(object):
                 self.tag not in entry.get('tags', []) and re.match(pattern, entry['description']) and entry[
                     'duration'] >= 60]
 
-    def _time_entry_logged_in_jira(self, entry_id):
-        if not self.local_entries.get(str(entry_id), None):
-            return False
-        if not self.local_entries.get(str(entry_id)).get('logged', None):
-            return False
-        return True
-
-    def _time_entry_tagged_in_toggl(self, entry_id):
-        if not self.local_entries.get(str(entry_id), None):
-            return False
-        if not self.local_entries.get(str(entry_id)).get('tagged', None):
-            return False
-        return True
+    def _local_entry_flag_exist(self, entry_id, key):
+        if self.local_entries.get(str(entry_id), {}).get(key, None):
+            return True
