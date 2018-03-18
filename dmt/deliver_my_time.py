@@ -31,27 +31,45 @@ class Dmt(object):
         start_date = self._get_start_datetime(days)
         toggl_time_entries = self.toggl.get_time_entries(start_date)
         filtered_toggl_time_entries = self._filter_toggl_time_entries(toggl_time_entries, pattern)
+
         for time_entry in [entry for entry in filtered_toggl_time_entries]:
+
             if not self._time_entry_logged_in_jira(time_entry['id']):
                 try:
-                    self.jira.log_task_time(time_entry['description'], time_entry['duration'],
-                                            comment=comment.format(time_entry['id']))
-                    logger.info('Logged time for entry {} to Jira'.format(time_entry['id']))
+                    self._log_task_time(comment, time_entry)
                 except HTTPError:
-                    logger.error('Error during logging time for entry {} to Jira', exc_info=True)
-                    self.local_entries[str(time_entry['id'])]['logged'] = False
-                    logger.info('Set logged flag to false in local entries storage')
+                    self._flag_logged_in_local(time_entry, False)
                     continue
+
             if not self._time_entry_tagged_in_toggl(time_entry['id']):
                 try:
-                    self.toggl.tag_time_entry(time_entry['id'], self.tag)
-                    logger.info('Tagged entry {} in Toggle'.format(time_entry['id']))
+                    self._tag_time_entry(time_entry)
                 except HTTPError:
-                    logger.error('Error during tagging entry {} in Toggle', exc_info=True)
-                    self.local_entries[str(time_entry['id'])]['logged'] = False
-                    logger.info('Set logged flag to False in local entries storage')
+                    self._flag_tagged_in_local(time_entry, False)
                     continue
+
             self.local_entries.pop(str(time_entry['id']), None)
+
+    def _log_task_time(self, comment, time_entry):
+        self.jira.log_task_time(time_entry['description'], time_entry['duration'],
+                                comment=comment.format(time_entry['id']))
+        logger.info('Logged time for entry {} to Jira'.format(time_entry['id']))
+
+    def _flag_logged_in_local(self, time_entry, value):
+        logger.error('Error during logging time for entry {} to Jira', exc_info=True)
+        self.local_entries.setdefault(str(time_entry['id']), {})
+        self.local_entries[str(time_entry['id'])]['logged'] = value
+        logger.info('Set logged flag to false in local entries storage')
+
+    def _tag_time_entry(self, time_entry):
+        self.toggl.tag_time_entry(time_entry['id'], self.tag)
+        logger.info('Tagged entry {} in Toggle'.format(time_entry['id']))
+
+    def _flag_tagged_in_local(self, time_entry, value):
+        logger.error('Error during tagging entry {} in Toggle', exc_info=True)
+        self.local_entries.setdefault(str(time_entry['id']), {})
+        self.local_entries[str(time_entry['id'])]['tagged'] = value
+        logger.info('Set logged flag to False in local entries storage')
 
     @staticmethod
     def _get_start_datetime(days):
