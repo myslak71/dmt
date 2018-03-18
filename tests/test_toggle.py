@@ -1,5 +1,7 @@
 import unittest
+
 import requests_mock
+
 from dmt.toggl_interface import TogglInterface
 from tests.fixtures.responses import fixed_time_entries
 
@@ -9,6 +11,7 @@ class TestBaseToggl(unittest.TestCase):
         self.toggl = TogglInterface('https://www.toggl.com/api/v8/', 'token')
 
 
+# TODO: Make this pretty...
 @requests_mock.Mocker()
 class TestToggl(TestBaseToggl):
     def test_get_time_entries_response(self, response_mock):
@@ -18,6 +21,10 @@ class TestToggl(TestBaseToggl):
         self.assertEqual(fixed_time_entries, time_entries)
 
     def test_tag_time_entries_response(self, response_mock):
-        response_mock.register_uri('POST', 'https://www.toggl.com/api/v8/time_entries/814800050',
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/1',
                                    status_code=200)
-        self.toggl.tag_time_entry(fixed_time_entries[0]['id'])
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/2',
+                                   status_code=200)
+        response_mock.register_uri('PUT', 'https://www.toggl.com/api/v8/time_entries/3',
+                                   status_code=200)
+        self.toggl.tag_time_entry(fixed_time_entries[0]['id'], 'logged')

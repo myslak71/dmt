@@ -1,12 +1,14 @@
 language: python
+os:
+  - linux
 python:
-- '2.7.14'
-- '3.5'
-- '3.6'
+  - '2.7.14'
+  - '3.5'
+  - '3.6'
 cache: pip
 install:
-- pip install pipenv --upgrade
-- pipenv install --dev
+  - pip install pipenv --upgrade
+  - pipenv install --dev
 script:
-- py.test --cov tests/
+  - py.test --cov tests/
 after_success: coveralls
