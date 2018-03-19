@@ -20,7 +20,7 @@ ___
 Code listed above will find every toggl entry, which match regex pattern, for the last 30 days. Then log every entry to corresponding Jira ticket (e.g https://jira_url.example/task-1) and mark toggl entry as 'logged' to prevent log it in the future.
  
 ### Auto log
-You can use crontab for Linux or Task Scheduler for Windows to run python script with every computer boot.
+You can use crontab for Linux or Task Scheduler for Windows to run python script with every computer boot or other scheduled time.
  
 
 ### License
