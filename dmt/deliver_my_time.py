@@ -2,8 +2,8 @@ import re
 import shelve
 
 import arrow
-from requests.exceptions import RequestException
 from jira.exceptions import JIRAError
+from requests.exceptions import RequestException
 
 from dmt.config.config import LOGGER
 from dmt.config.config import TOGGL_API_URL
@@ -25,7 +25,7 @@ class Dmt(object):
         Collect time entries from toggl. Log every entry without tag to jira and tag entry on toggl side.
 
         :param days: days span
-        :param pattern: log toggle entry when description matches pattern
+        :param pattern: log toggle entry when description matches pattern. then use matched part as task unique name
         :param comment: description for time logs in jira
         :return:
         """
@@ -52,7 +52,7 @@ class Dmt(object):
             self.local_entries.pop(str(time_entry['id']), None)
 
     def _log_task_time(self, comment, time_entry):
-        self.jira.log_task_time(time_entry['description'], time_entry['duration'],
+        self.jira.log_task_time(time_entry['jira_name'], time_entry['duration'],
                                 comment=comment.format(time_entry['id']))
         logger.info('Logged time for entry {} to Jira'.format(time_entry['id']))
 
@@ -79,9 +79,23 @@ class Dmt(object):
         return start_datetime.format('YYYY-MM-DDTHH:mm:ssZZ')
 
     def _filter_toggl_time_entries(self, entries, pattern):
-        return [entry for entry in entries if
-                self.tag not in entry.get('tags', []) and re.match(pattern, entry['description']) and entry[
-                    'duration'] >= 60]
+        filtered_entries = []
+        for entry in entries:
+
+            if self.tag in entry.get('tags', []):
+                continue
+
+            match = re.search(pattern, entry['description'], re.IGNORECASE)
+            if match:
+                entry['jira_name'] = match.group(0)
+            else:
+                continue
+
+            if entry['duration'] < 60:
+                continue
+
+            filtered_entries.append(entry)
+        return filtered_entries
 
     def _local_entry_flag_exist(self, entry_id, key):
         if self.local_entries.get(str(entry_id), {}).get(key, None):
