@@ -31,7 +31,7 @@ class Toggl(object):
 
     def tag_time_entry(self, entry_id, tag):
         url = self._build_url(entry_id=entry_id, category='time_entries', separate_sign='/')
-        data = {'time_entry': {"tags": [tag], 'tag_action': 'add'}}
+        data = {'time_entry': {'tags': [tag], 'tag_action': 'add'}}
         response = self.session.put('{url}'.format(url=url), data=json.dumps(data), auth=(self.token, 'api_token'))
         response.raise_for_status()
         return response
