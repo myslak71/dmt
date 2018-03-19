@@ -23,7 +23,6 @@ ddt = "*"
 [packages]
 
 requests = "*"
-future = "*"
 jira = "*"
 arrow = "*"
-"backports.functools-lru-cache" = "*"
+"backports.functools_lru_cache" = "*"
