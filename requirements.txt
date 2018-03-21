@@ -1,5 +1,5 @@
 arrow==0.12.1
-Autologging==1.1.0
+autologging==1.1.0
 backports.functools-lru-cache==1.5
 certifi==2018.1.18
 chardet==3.0.4
