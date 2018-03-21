@@ -2,6 +2,7 @@ import re
 import shelve
 
 import arrow
+from autologging import traced
 from jira.exceptions import JIRAError
 from requests.exceptions import RequestException
 
@@ -13,6 +14,7 @@ from dmt.toggl_interface import TogglInterface
 logger = LOGGER
 
 
+@traced(LOGGER)
 class Dmt(object):
     def __init__(self, token, jira_url, jira_user, jira_password, tag='logged'):
         self.toggl = TogglInterface(TOGGL_API_URL, token)
@@ -85,13 +87,13 @@ class Dmt(object):
             if self.tag in entry.get('tags', []):
                 continue
 
-            match = re.search(pattern, entry['description'], re.IGNORECASE)
+            match = re.search(pattern, entry.get('description', ''), re.IGNORECASE)
             if match:
                 entry['jira_name'] = match.group(0)
             else:
                 continue
 
-            if entry['duration'] < 60:
+            if entry.get('duration', 0) < 60:
                 continue
 
             filtered_entries.append(entry)

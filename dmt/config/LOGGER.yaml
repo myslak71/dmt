@@ -1,23 +1,28 @@
 version: 1
+
 formatters:
-  dmt_formatter:
+  console_formatter:
     format: '%(asctime)s - %(filename)s - %(levelname)s - %(message)s'
     datefmt: '%Y-%m-%d %H:%M'
+  file_formatter:
+    format: '%(asctime)s - %(filename)s - %(funcName)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M'
+
 handlers:
   console:
     class: logging.StreamHandler
     level: INFO
-    formatter: dmt_formatter
+    formatter: console_formatter
     stream: ext://sys.stdout
   file:
       class : logging.FileHandler
-      formatter: dmt_formatter
-      level: DEBUG
-      mode: 'w'
+      formatter: file_formatter
+      level: TRACE
+      mode: 'a'
       filename: dmt.log
 
 loggers:
   dmt_logger:
-    level: DEBUG
+    level: TRACE
     handlers: [console, file]
     propagate: no

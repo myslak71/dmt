@@ -1,8 +1,13 @@
 import json
+
 import requests
+from autologging import traced
 from requests.adapters import HTTPAdapter
 
+from dmt.config.config import LOGGER
 
+
+@traced(LOGGER)
 class TogglInterface(object):
     def __init__(self, api_url, token):
         self.toggl = Toggl().setup_toggl(api_url, token)
@@ -14,6 +19,7 @@ class TogglInterface(object):
         return self.toggl.tag_time_entry(entry_id, tag)
 
 
+@traced(LOGGER)
 class Toggl(object):
     def setup_toggl(self, api_url, token):
         self.api_url = api_url
