@@ -17,6 +17,7 @@ setup(
     author_email='kedod@protonmail.com',
     description='Log time from toggl entries to Jira smoothly.',
     url='https://github.com/kedod/dmt',
+    download_url = 'https://github.com/kedod/dmt/archive/v0.1.10.tar.gz',
     keywords=['toggl', 'jira', 'logger', 'logging'],
     long_description=long_description,
     include_package_data=True,
