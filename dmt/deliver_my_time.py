@@ -31,11 +31,9 @@ class Dmt(object):
         :param comment: description for time logs in jira
         :return:
         """
-        start_date = self._get_start_datetime(days)
-        toggl_time_entries = self.toggl.get_time_entries(start_date)
-        filtered_toggl_time_entries = self._filter_toggl_time_entries(toggl_time_entries, pattern)
+        time_entries = self._get_suitable_time_entries(days, pattern)
 
-        for time_entry in [entry for entry in filtered_toggl_time_entries]:
+        for time_entry in [entry for entry in time_entries]:
 
             if not self._local_entry_flag_exist(time_entry['id'], 'logged'):
                 try:
@@ -52,6 +50,12 @@ class Dmt(object):
                     continue
 
             self.local_entries.pop(str(time_entry['id']), None)
+
+    def _get_suitable_time_entries(self, days, pattern):
+        start_date = self._get_start_datetime(days)
+        toggl_time_entries = self.toggl.get_time_entries(start_date)
+        filtered_toggl_time_entries = self._filter_toggl_time_entries(toggl_time_entries, pattern)
+        return filtered_toggl_time_entries
 
     def _log_task_time(self, comment, time_entry):
         self.jira.log_task_time(time_entry['jira_name'], time_entry['duration'],
