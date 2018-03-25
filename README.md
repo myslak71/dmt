@@ -14,10 +14,10 @@ pip install https://github.com/kedod/dmt/archive/master.zip
 ```python
 from dmt.deliver_my_time import Dmt
 dmt = Dmt('toggl_token', 'https://jira_url.example', 'jira_user', 'jira_pass')
-dmt.log_time_to_jira(days=30, pattern=r'task-\d+', comment=' time logged by dmt; toggle entry {}')
+dmt.log_time_to_jira(days=30, pattern=r'TASK-\d+', comment=' time logged by dmt; toggle entry {}')
 ```
 ___
-Code listed above will find every toggl entry, which match regex pattern, for the last 30 days. Then log every entry to corresponding Jira ticket (e.g https://jira_url.example/task-1) and mark toggl entry as 'logged' to prevent logging that entry in the future.
+Code listed above will find every toggl entry, which match regex pattern, for the last 30 days. Then log every entry with description to corresponding Jira ticket (e.g https://jira_url.example/TASK-1) and mark toggl entry as 'logged' to prevent logging that entry in the future.
  
 ### Auto log
 You can use crontab for Linux or Task Scheduler for Windows to run python script with every computer boot or other scheduled time.
