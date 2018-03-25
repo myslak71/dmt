@@ -33,7 +33,7 @@ class Dmt(object):
         """
         time_entries = self._get_suitable_time_entries(days, pattern)
 
-        for time_entry in [entry for entry in time_entries]:
+        for time_entry in time_entries:
 
             if not self._local_entry_flag_exist(time_entry['id'], 'logged'):
                 try:
